@@ -1,2 +1,2 @@
-def process_interactive():
-    pass
+def process_interactive() -> str:
+    return ""

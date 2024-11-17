@@ -1,2 +1,2 @@
-def process_total():
-    pass
+def process_total(year: int) -> str:
+    return ""
