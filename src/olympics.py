@@ -43,16 +43,26 @@ def configure_parser(parser):
 arg_parser = argparse.ArgumentParser(description="A CLI tool for analyzing dataset.")
 configure_parser(arg_parser)
 
-if __name__ == '__main__':
+def main():
     args = arg_parser.parse_args()
 
     if args.command == "-medals":
-        process_medals(args.country, args.year)
+        result = process_medals(args.country, args.year)
     elif args.command == "-total":
-        process_total(args.year)
+        result = process_total(args.year)
     elif args.command == "-overall":
-        process_overall(args.countries)
+        result = process_overall(args.countries)
     elif args.command == "-interactive":
-        process_interactive()
+        result = process_interactive()
     else:
         arg_parser.print_help()
+        return 0
+
+    print(result)
+
+    if args.output:
+        with open(args.output, "w") as f:
+            f.write(result)
+
+if __name__ == '__main__':
+    main()
