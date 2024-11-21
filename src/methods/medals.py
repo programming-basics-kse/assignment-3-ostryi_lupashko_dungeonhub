@@ -9,7 +9,7 @@ def process_medals(country: str, year: str):
         k = 0
         for line in file:
             row = line.strip().split('\t')
-            if row[6] == country and row[9] == year and row[14] != 'NA':
+            if country in row[6] and row[9] == year and row[14] != 'NA':
                 sportsman = [row[1], row[12], row[14]]
                 info.append(sportsman)
                 k += 1

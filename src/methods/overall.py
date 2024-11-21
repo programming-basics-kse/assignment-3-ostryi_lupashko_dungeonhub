@@ -1,5 +1,15 @@
 from typing import List
 
+def get_country(my_country: str, info: dict) -> str:
+    for key, value in info.items():
+        if key in my_country:
+            return key
+
+        if my_country in key:
+            info[my_country] = value
+            del info[key]
+
+        return my_country
 
 def process_overall(countries: list[str]) -> str:
 
@@ -7,8 +17,9 @@ def process_overall(countries: list[str]) -> str:
         info = {}
         for line in file:
             row = line.strip().split('\t')
-            country = row[6]
+            country = get_country(row[6], info)
             year = row[9]
+
             if country in countries and row[14] != 'NA':
                 if country not in info:
                     info[country] = {}
