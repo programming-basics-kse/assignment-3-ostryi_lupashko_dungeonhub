@@ -12,3 +12,4 @@ with open('../../data/Olympics.tsv', 'r') as file:
 
 for country in info:
     print(f"{country} - {info[country]['Gold']} - {info[country]['Silver']} - {info[country]['Bronze']}", end="\n\n")
+#
