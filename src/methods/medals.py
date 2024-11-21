@@ -1,3 +1,6 @@
+country = "Spain"
+year = "1937"
+
 def process_medals(country: str, year: str):
 
     with open('../../data/Olympics.tsv', 'r') as file:
@@ -13,8 +16,11 @@ def process_medals(country: str, year: str):
                 if k == 10:
                     break
 
+    result = ""
+    if info == []:
+        return ""
+
     k = 1
-    result = ''
     for i in range(0, len(info)):
         result += f"{k}. Name: {info[i][0]},"
         result += '\n'
@@ -31,5 +37,5 @@ def process_medals(country: str, year: str):
     return result
 
 
-print(process_medals('Italy', '1936'))
+print(process_medals(country, year))
 #
