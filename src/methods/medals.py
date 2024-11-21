@@ -32,3 +32,4 @@ def process_medals(country: str, year: str):
 
 
 print(process_medals('Italy', '1936'))
+#
