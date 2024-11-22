@@ -1,43 +1,33 @@
 import csv
-import os
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(os.path.dirname(current_dir))  # Go up two levels to `project`
+from utils import *
 
 def process_interactive() -> str:
     country = input("Enter country name: ")
 
-    file_path = os.path.join(project_root, "data", f"Olympics.tsv")
-    print(file_path)
+    file_path = get_filepath("data/Olympics.tsv")
 
     with open(file_path, 'r') as file:
         reader = csv.reader(file, delimiter='\t')
         header = next(reader)
-
-        YEAR_INDEX = header.index('Year')
-        CITY_INDEX = header.index('City')
-        MEDAL_INDEX = header.index('Medal')
+        set_indexes(header)
 
         data = []
 
         for row in reader:
             if country in row[6]:
                 data.append({
-                    "year": row[YEAR_INDEX],
-                    "city": row[CITY_INDEX],
-                    "medal": row[MEDAL_INDEX]
+                    "year": row[year_index],
+                    "city": row[place_index],
+                    "medal": row[medal_index]
                 })
 
     if not data:
         return f"No data for {country} found."
 
-    result = "\n\n"
-    result += "================"
-    result += "\n\n"
-
     first_olympiad_row = min(data, key=lambda x: int(x["year"]))
 
-    result += f"First olympiad for {country} was in {first_olympiad_row['year']} year in {first_olympiad_row['city']}.\n"
+    result = f"First olympiad for {country} was in {first_olympiad_row['year']} year in {first_olympiad_row['city']}.\n"
 
     years_data = {}
 
@@ -64,9 +54,5 @@ def process_interactive() -> str:
     gold_average = sum(value["gold"] for key, value in years_data) / len(years_data)
 
     result += f"Bronze average: {bronze_average:.2f}, Silver average: {silver_average:.2f}, Gold average: {gold_average:.2f}\n"
-
-    result += "\n\n"
-    result += "================"
-    result += "\n\n"
 
     return result
