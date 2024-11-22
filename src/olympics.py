@@ -46,6 +46,11 @@ def main():
         arg_parser.print_help()
         return 0
 
+    if not result:
+        result = "No data found"
+
+    result = "\n\n================\n\n" + result + "\n\n================\n\n"
+
     print(result)
 
     if args.output:
