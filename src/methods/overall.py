@@ -1,26 +1,21 @@
-from typing import List
+import csv
+from utils import *
 
-def get_country(my_country: str, info: dict) -> str:
-    for key, value in info.items():
-        if key in my_country:
-            return key
-
-        if my_country in key:
-            info[my_country] = value
-            del info[key]
-
-        return my_country
 
 def process_overall(countries: list[str]) -> str:
+    file_path = get_filepath("data/Olympics.tsv")
 
-    with open('../../data/Olympics.tsv', 'r') as file:
+    with open(file_path, 'r') as file:
         info = {}
-        for line in file:
-            row = line.strip().split('\t')
-            country = get_country(row[6], info)
-            year = row[9]
+        reader = csv.reader(file, delimiter='\t')
+        header = next(reader)
+        set_indexes(header)
 
-            if country in countries and row[14] != 'NA':
+        for row in reader:
+            country = get_country(row[country_index], info)
+            year = row[year_index]
+
+            if country in countries and row[medal_index] != 'NA':
                 if country not in info:
                     info[country] = {}
                 if year not in info[country]:
@@ -30,32 +25,20 @@ def process_overall(countries: list[str]) -> str:
     if info == {}:
         return ""
 
-    result = '\n\n'
     k = 1
-    result += "================"
-    result += '\n\n'
+
+    result = ""
+
     for country in info:
         max = 0
-        for year in range(1896, 1993, 4):
-            try:
-                if max < int(info[country][str(year)]):
-                    max = int(info[country][str(year)])
-                    maxyear = year
-            except KeyError:
-                continue
 
-        for year in range(1992, 2016, 2):
-            try:
-                if max < int(info[country][str(year)]):
-                    max = int(info[country][str(year)])
-            except KeyError:
-                continue
+        for year in info[country]:
+            if max < int(info[country][str(year)]):
+                max = int(info[country][str(year)])
+                maxyear = year
 
         result += f"{k}. {country}'s most medals year was: {maxyear}, {max} medals"
 
-        result += '\n\n'
-        result += "================"
-        result += '\n\n'
         k += 1
 
     return result
