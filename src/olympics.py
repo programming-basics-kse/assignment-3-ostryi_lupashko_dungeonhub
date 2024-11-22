@@ -4,20 +4,8 @@ import os
 from methods import *
 
 def valid_or_create_file(filepath):
-    directory = os.path.dirname(filepath)
-
-    # TODO: create dir if not exists
-    if directory and os.path.exists(directory):
-        raise argparse.ArgumentTypeError(f"Directory '{directory}' does not exist.")
-
-    if not os.path.isfile(filepath):
-        try:
-            with open(filepath, "r") as f:
-                pass
-
-            print(f"File '{filepath}' created.")
-        except Exception as e:
-            raise argparse.ArgumentTypeError(f"Could not create file '{filepath}': {e}")
+    if not os.path.exists(filepath) or not os.path.isfile(filepath):
+        raise argparse.ArgumentTypeError(f"File '{filepath}' does not exist.")
 
     return filepath
 
