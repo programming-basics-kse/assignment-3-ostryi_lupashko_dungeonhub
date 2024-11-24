@@ -41,11 +41,11 @@ def process_overall(countries: list[str]) -> str:
                 max = int(info[country][str(year)])
                 maxyear = year
 
-        result += f"{k}. {country}'s most medals year was: {maxyear}, {max} medals"
+        result += f"{k}. {country}'s most medals year was: {maxyear}, {max} medals\n"
 
         k += 1
 
     return result
 
 if __name__ == '__main__':
-    process_overall(["United States", "Ukraine", "Georgia"])
+    print(process_overall(["United States", "Ukraine", "Georgia"]))

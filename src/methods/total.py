@@ -25,8 +25,10 @@ def process_total(year):
 
     result = ""
 
+    max_width = max(len(country) for country in info.keys())
+
     for country in info:
-        result += f"{country} - {info[country]['Gold']} - {info[country]['Silver']} - {info[country]['Bronze']}\n"
+        result += f"{country:<{max_width}}   {info[country]['Gold']} - {info[country]['Silver']} - {info[country]['Bronze']}\n"
 
     return result
 

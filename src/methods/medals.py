@@ -13,6 +13,7 @@ def process_medals(country: str, year: str):
         header = next(reader)
         info = []
         indexes = get_indexes(header)
+
         k = 0
 
         for row in reader:
@@ -23,19 +24,13 @@ def process_medals(country: str, year: str):
                 if k == 10:
                     break
 
-    result = ""
     if not info:
         return ""
 
-    k = 1
-    for i in range(0, len(info)):
-        result += f"{k}. Name: {info[i]['Name']},\n"
-        result += f"Sport: {info[i]['Sport']},\n"
-        result += f"Medal: {info[i]['Medal']}.\n\n"
-        result += '=======================\n\n'
-        k += 1
-
-    return result
+    return "=======================\n".join(
+        f"Name: {info[i]['Name']}\nSport: {info[i]['Sport']}\nMedal: {info[i]['Medal']}\n"
+        for i in range(0, len(info))
+    )
 
 if __name__ == '__main__':
-    print(process_medals("United States", "2020"))
+    print(process_medals("United States", "2008"))
