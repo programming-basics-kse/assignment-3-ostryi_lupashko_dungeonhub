@@ -1,5 +1,5 @@
 import csv
-from utils import *
+from .utils import *
 
 
 def process_medals(country: str, year: str):
@@ -9,12 +9,12 @@ def process_medals(country: str, year: str):
         reader = csv.reader(file, delimiter='\t')
         header = next(reader)
         info = []
-        set_indexes(header)
+        indexes = get_indexes(header)
         k = 0
 
         for row in reader:
-            if country in row[country_index] and row[year_index] == year and row[medal_index] != 'NA':
-                sportsman = {'Name': row[name_index], "Sport": row[sport_index], "Medal": row[medal_index]}
+            if country in row[indexes["country"]] and row[indexes["year"]] == year and row[indexes["medal"]] != 'NA':
+                sportsman = {'Name': row[indexes['name']], "Sport": row[indexes['sport']], "Medal": row[indexes['medal']]}
                 info.append(sportsman)
                 k += 1
                 if k == 10:

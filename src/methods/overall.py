@@ -1,5 +1,5 @@
 import csv
-from utils import *
+from .utils import *
 
 
 def process_overall(countries: list[str]) -> str:
@@ -9,13 +9,13 @@ def process_overall(countries: list[str]) -> str:
         info = {}
         reader = csv.reader(file, delimiter='\t')
         header = next(reader)
-        set_indexes(header)
+        indexes = get_indexes(header)
 
         for row in reader:
-            country = get_country(row[country_index], info)
-            year = row[year_index]
+            country = get_country(row[indexes["country"]], info)
+            year = row[indexes["year"]]
 
-            if country in countries and row[medal_index] != 'NA':
+            if country in countries and row[indexes["medal"]] != 'NA':
                 if country not in info:
                     info[country] = {}
                 if year not in info[country]:

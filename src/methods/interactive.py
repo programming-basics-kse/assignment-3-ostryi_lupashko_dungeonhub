@@ -1,6 +1,6 @@
 import csv
 
-from utils import *
+from .utils import *
 
 def process_interactive() -> str:
     country = input("Enter country name: ")
@@ -10,16 +10,16 @@ def process_interactive() -> str:
     with open(file_path, 'r') as file:
         reader = csv.reader(file, delimiter='\t')
         header = next(reader)
-        set_indexes(header)
+        indexes = get_indexes(header)
 
         data = []
 
         for row in reader:
-            if country in row[6]:
+            if country in row[indexes["country"]]:
                 data.append({
-                    "year": row[year_index],
-                    "city": row[place_index],
-                    "medal": row[medal_index]
+                    "year": row[indexes["year"]],
+                    "city": row[indexes["city"]],
+                    "medal": row[indexes["medal"]],
                 })
 
     if not data:
