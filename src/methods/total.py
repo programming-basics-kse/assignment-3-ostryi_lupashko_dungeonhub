@@ -23,6 +23,9 @@ def process_total(year):
                     info[country] = {'Gold': 0, 'Silver': 0, 'Bronze': 0}
                 info[country][row[indexes["medal"]]] += 1
 
+    if not info:
+        return ""
+
     result = ""
 
     max_width = max(len(country) for country in info.keys())
@@ -30,7 +33,7 @@ def process_total(year):
     for country in info:
         result += f"{country:<{max_width}}   {info[country]['Gold']} - {info[country]['Silver']} - {info[country]['Bronze']}\n"
 
-    return result
+    return result[:-1]
 
 if __name__ == '__main__':
     print(process_total("2012"))

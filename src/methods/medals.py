@@ -27,8 +27,8 @@ def process_medals(country: str, year: str):
     if not info:
         return ""
 
-    return "=======================\n".join(
-        f"Name: {info[i]['Name']}\nSport: {info[i]['Sport']}\nMedal: {info[i]['Medal']}\n"
+    return "\n=======================\n".join(
+        f"Name: {info[i]['Name']}\nSport: {info[i]['Sport']}\nMedal: {info[i]['Medal']}"
         for i in range(0, len(info))
     )
 

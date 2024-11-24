@@ -2,7 +2,7 @@ import os
 
 def get_filepath(filePath):
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(os.path.dirname(current_dir))  # Go up two levels to `project`
+    project_root = os.path.dirname(os.path.dirname(current_dir))  # Go up two levels to project root
     return os.path.join(project_root, filePath)
 
 def get_indexes(header):
@@ -12,7 +12,7 @@ def get_indexes(header):
         "medal": header.index("Medal"),
         "name": header.index("Name"),
         "sport": header.index("Sport"),
-        "place": header.index("City"),
+        "city": header.index("City"),
     }
 
 def get_country(my_country: str, info: dict) -> str:
