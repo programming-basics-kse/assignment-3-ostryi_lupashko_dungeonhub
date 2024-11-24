@@ -1,6 +1,9 @@
 import csv
 
-from .utils import *
+if __name__ == '__main__':
+    from utils import *
+else:
+    from .utils import *
 
 def process_interactive() -> str:
     country = input("Enter country name: ")
@@ -56,3 +59,6 @@ def process_interactive() -> str:
     result += f"Bronze average: {bronze_average:.2f}, Silver average: {silver_average:.2f}, Gold average: {gold_average:.2f}\n"
 
     return result
+
+if __name__ == '__main__':
+    print(process_interactive())

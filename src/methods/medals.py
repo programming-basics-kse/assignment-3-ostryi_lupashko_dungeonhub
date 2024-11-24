@@ -1,6 +1,9 @@
 import csv
-from .utils import *
 
+if __name__ == '__main__':
+    from utils import *
+else:
+    from .utils import *
 
 def process_medals(country: str, year: str):
     file_path = get_filepath("data/Olympics.tsv")
@@ -33,3 +36,6 @@ def process_medals(country: str, year: str):
         k += 1
 
     return result
+
+if __name__ == '__main__':
+    print(process_medals("United States", "2020"))

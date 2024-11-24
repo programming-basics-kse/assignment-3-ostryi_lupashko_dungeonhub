@@ -1,5 +1,9 @@
 import csv
-from .utils import *
+
+if __name__ == '__main__':
+    from utils import *
+else:
+    from .utils import *
 
 
 def process_overall(countries: list[str]) -> str:
@@ -42,3 +46,6 @@ def process_overall(countries: list[str]) -> str:
         k += 1
 
     return result
+
+if __name__ == '__main__':
+    process_overall(["United States", "Ukraine", "Georgia"])
