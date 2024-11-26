@@ -13,6 +13,8 @@ def get_indexes(header):
         "name": header.index("Name"),
         "sport": header.index("Sport"),
         "city": header.index("City"),
+        "age": header.index("Age"),
+        "sex": header.index("Sex")
     }
 
 def get_country(my_country: str, info: dict) -> str:
