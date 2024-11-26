@@ -6,8 +6,8 @@ else:
     from .utils import *
 
 
-def process_overall(countries: list[str]) -> str:
-    file_path = get_filepath("data/Olympics.tsv")
+def process_overall(inputFile, countries: list[str]) -> str:
+    file_path = get_filepath(inputFile)
 
     with open(file_path, 'r') as file:
         info = {}

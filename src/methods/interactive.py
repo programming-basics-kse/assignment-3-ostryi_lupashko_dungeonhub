@@ -5,10 +5,10 @@ if __name__ == '__main__':
 else:
     from .utils import *
 
-def process_interactive() -> str:
+def process_interactive(inputFile) -> str:
     country = input("Enter country name: ")
 
-    file_path = get_filepath("data/Olympics.tsv")
+    file_path = get_filepath(inputFile)
 
     with open(file_path, 'r') as file:
         reader = csv.reader(file, delimiter='\t')

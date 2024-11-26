@@ -36,15 +36,16 @@ configure_parser(arg_parser)
 
 def main():
     args = arg_parser.parse_args()
+    year = str(args.year)
 
     if args.command == "medals":
-        result = process_medals(args.country, str(args.year))
+        result = process_medals(args.inputFile, args.country, year)
     elif args.command == "total":
-        result = process_total(str(args.year))
+        result = process_total(args.inputFile, year)
     elif args.command == "overall":
-        result = process_overall(args.countries)
+        result = process_overall(args.inputFile, args.countries)
     elif args.command == "interactive":
-        result = process_interactive()
+        result = process_interactive(args.inputFile)
     else:
         print(args.command)
         arg_parser.print_help()

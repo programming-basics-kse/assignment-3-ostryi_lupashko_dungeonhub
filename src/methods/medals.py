@@ -5,8 +5,8 @@ if __name__ == '__main__':
 else:
     from .utils import *
 
-def process_medals(country: str, year: str):
-    file_path = get_filepath("data/Olympics.tsv")
+def process_medals(inputFile, country: str, year: str):
+    file_path = get_filepath(inputFile)
 
     with open(file_path, 'r') as file:
         reader = csv.reader(file, delimiter='\t')

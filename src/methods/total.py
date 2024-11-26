@@ -6,8 +6,8 @@ else:
     from .utils import *
 
 
-def process_total(year):
-    file_path = get_filepath("data/Olympics.tsv")
+def process_total(inputFile, year):
+    file_path = get_filepath(inputFile)
 
     with open(file_path, 'r') as file:
         info = {}
