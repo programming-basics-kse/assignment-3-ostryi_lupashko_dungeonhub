@@ -1,5 +1,4 @@
 import csv
-import pprint
 
 if __name__ == '__main__':
     from utils import *
@@ -8,7 +7,7 @@ else:
 
 def category_to_str(category):
     categories = ["18-25", "25-35", "35-50", "50+"]
-    return categories[category - 1]
+    return categories[int(category) - 1]
 
 def age_to_category(age):
     if age < 25:
@@ -26,13 +25,14 @@ def get_best_players(inputFile):
     players_medals = {}
 
     with open(file_path, 'r') as f:
-        reader = csv.reader(f, delimiter="\t")
+        reader = csv.reader(f, delimiter=",")
         header = next(reader)
         indexes = get_indexes(header)
 
         for row in reader:
-            if row[indexes["name"]] not in players_medals:
-                name = row[indexes["name"]]
+            name = row[indexes["name"]]
+
+            if name not in players_medals:
                 sex = row[indexes["sex"]]
 
                 players_medals[name] = {
@@ -42,12 +42,10 @@ def get_best_players(inputFile):
                     "medals": 0
                 }
 
-            if row[indexes["name"]] != "NA":
-                name = row[indexes["name"]]
-
+            if row[indexes["medal"]] != "NA":
                 players_medals[name]["medals"] += 1
 
-            if players_medals[name]["age"] is None:
+            if players_medals[row[indexes["name"]]]["age"] is None:
                 if row[indexes["age"]] != "NA":
                     players_medals[name]["age"] = int(row[indexes["age"]]) + (2024 - int(row[indexes["year"]]))
                     players_medals[name]["age_category"] = age_to_category(players_medals[name]["age"])
@@ -93,7 +91,7 @@ def process_top(inputFile, who: list[bool], category: list[int]):
 
     for gender in genders:
         for age_category in age_categories:
-            result += f"{best_players[gender][age_category]['name']} is the best {gender} player in {category_to_str(age_category)} category with {best_players[gender][age_category]['medals']}\n"
+            result += f"{best_players[gender][int(age_category)]['name']} is the best {gender} player in {category_to_str(age_category)} category with {best_players[gender][int(age_category)]['medals']}\n"
 
     return result
 
