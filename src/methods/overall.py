@@ -11,7 +11,7 @@ def process_overall(inputFile, countries: list[str]) -> str:
 
     with open(file_path, 'r') as file:
         info = {}
-        reader = csv.reader(file, delimiter='\t')
+        reader = csv.reader(file, delimiter=',')
         header = next(reader)
         indexes = get_indexes(header)
 

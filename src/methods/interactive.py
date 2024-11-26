@@ -11,7 +11,7 @@ def process_interactive(inputFile) -> str:
     file_path = get_filepath(inputFile)
 
     with open(file_path, 'r') as file:
-        reader = csv.reader(file, delimiter='\t')
+        reader = csv.reader(file, delimiter=',')
         header = next(reader)
         indexes = get_indexes(header)
 
