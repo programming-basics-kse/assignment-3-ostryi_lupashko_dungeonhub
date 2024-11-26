@@ -71,11 +71,12 @@ def configure_parser(parser):
     interactive_parser.add_argument("--output", type=valid_file, help="Path to the output file")
 
     args = parser.parse_args()
+    if args.command == "top":
+        try:
 
-    try:
-        validate_top_args(args.top)
-    except argparse.ArgumentTypeError as e:
-        parser.error(str(e))
+            validate_top_args(args.top)
+        except argparse.ArgumentTypeError as e:
+            parser.error(str(e))
 
 
 arg_parser = argparse.ArgumentParser(description="A CLI tool for analyzing dataset.")
