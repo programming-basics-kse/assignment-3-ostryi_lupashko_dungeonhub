@@ -2,26 +2,33 @@ import csv
 
 if __name__ == '__main__':
     from utils import *
+    from row import Row
 else:
     from .utils import *
+    from .row import Row
 
+def get_medals_stats(inputFile, year):
+    info = {}
 
-def process_total(inputFile, year):
-    file_path = get_filepath(inputFile)
-
-    with open(file_path, 'r') as file:
-        info = {}
+    with open(get_filepath(inputFile), 'r') as file:
         reader = csv.reader(file, delimiter=',')
         header = next(reader)
         indexes = get_indexes(header)
 
-        for row in reader:
-            country = get_country(row[indexes["country"]], info)
+        for line in reader:
+            row = Row(line, indexes)
+            country = get_country(row.get_country(), info)
 
-            if row[indexes["year"]] == year and row[indexes["medal"]] != 'NA':
+            if row.get_year() == year and row.has_medal():
                 if country not in info:
                     info[country] = {'Gold': 0, 'Silver': 0, 'Bronze': 0}
-                info[country][row[indexes["medal"]]] += 1
+
+                info[country][row.get_medal()] += 1
+
+    return info
+
+def process_total(inputFile, year):
+    info = get_medals_stats(inputFile, year)
 
     if not info:
         return ""
@@ -36,4 +43,5 @@ def process_total(inputFile, year):
     return result[:-1]
 
 if __name__ == '__main__':
-    print(process_total("2012"))
+    print(process_total("data/athlete_events.csv", "2012"))
+

@@ -93,7 +93,7 @@ def main():
         result = process_overall(args.inputFile, args.countries)
     elif args.command == "interactive":
         result = process_interactive(args.inputFile)
-    elif args.command == "top":
+    elif args.command == "top":  # Check this
         top_args = args.top
 
         who = [False, False]

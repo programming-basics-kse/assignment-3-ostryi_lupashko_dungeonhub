@@ -2,74 +2,94 @@ import csv
 
 if __name__ == '__main__':
     from utils import *
+    from row import Row
 else:
     from .utils import *
+    from .row import Row
 
-def category_to_str(category):
-    categories = ["18-25", "25-35", "35-50", "50+"]
-    return categories[int(category) - 1]
+class Player:
+    def __init__(self, row):
+        self.sex = row.get_sex()
+        self.age_category = None
+        self.age = None
+        self.set_age(row.calc_age())
+        self.medals = 0
+        self.name = row.get_name()
 
-def age_to_category(age):
-    if age < 25:
-        return 1
-    elif age < 35:
-        return 2
-    elif age < 50:
-        return 3
-    else:
-        return 4
+    def increase_medals(self):
+        self.medals += 1
 
-def get_best_players(inputFile):
-    file_path = get_filepath(inputFile)
+    def get_age_category(self):
+        if self.age < 25:
+            return 1
+        elif self.age < 35:
+            return 2
+        elif self.age < 50:
+            return 3
+        else:
+            return 4
 
+    def age_category_to_string(self):
+        categories = ["18-25", "25-35", "35-50", "50+"]
+        return categories[int(self.age_category) - 1]
+
+    def get_medals(self):
+        return self.medals
+
+    def has_age(self):
+        return self.age is not None
+
+    def set_age(self, age: int):
+        self.age = age
+
+        if self.has_age():
+            self.age_category = self.get_age_category()
+
+    def get_sex(self):
+        return self.sex
+
+    def get_name(self):
+        return self.name
+
+def get_players_stats(inputFile):
     players_medals = {}
 
-    with open(file_path, 'r') as f:
+    with open(get_filepath(inputFile), 'r') as f:
         reader = csv.reader(f, delimiter=",")
         header = next(reader)
         indexes = get_indexes(header)
 
-        for row in reader:
-            name = row[indexes["name"]]
+        for line in reader:
+            row = Row(line, indexes)
 
-            if name not in players_medals:
-                sex = row[indexes["sex"]]
+            if row.get_name() not in players_medals:
+                player = Player(row)
+            else:
+                player = players_medals[row.get_name()]
 
-                players_medals[name] = {
-                    "sex": sex,
-                    "age": None,
-                    "age_category": None,
-                    "medals": 0
-                }
+            if row.has_medal():
+                player.increase_medals()
 
-            if row[indexes["medal"]] != "NA":
-                players_medals[name]["medals"] += 1
+            if not player.has_age() and row.has_age():
+                player.set_age(row.calc_age())
 
-            if players_medals[row[indexes["name"]]]["age"] is None:
-                if row[indexes["age"]] != "NA":
-                    players_medals[name]["age"] = int(row[indexes["age"]]) + (2024 - int(row[indexes["year"]]))
-                    players_medals[name]["age_category"] = age_to_category(players_medals[name]["age"])
+            players_medals[row.get_name()] = player
 
-    for key, value in players_medals.copy().items():
-        if value["age"] is None:
-            del players_medals[key]
+    return {key: value for key, value in players_medals.copy().items() if value.has_age()}
+
+def get_best_players(inputFile):
+    players_stats = get_players_stats(inputFile)
 
     best_players = {
         "M": {1: {}, 2: {}, 3: {}, 4: {}},
         "F": {1: {}, 2: {}, 3: {}, 4: {}}
     }
 
-    for key, value in players_medals.items():
-        our_category = best_players[value["sex"]][value["age_category"]]
+    for key, player in players_stats.items():
+        current_best = best_players[player.get_sex()][player.get_age_category()]
 
-        player = {
-            "name": key,
-            "age": value["age"],
-            "medals": value["medals"],
-        }
-
-        if not our_category or our_category["medals"] < value["medals"]:
-            best_players[value["sex"]][value["age_category"]] = player
+        if not current_best or current_best.get_medals() < player.get_medals():
+            best_players[player.get_sex()][player.get_age_category()] = player
 
     return best_players
 
@@ -84,6 +104,7 @@ def process_top(inputFile, who: list[bool], category: list[int]):
         genders.append("M")
     if who[1]:
         genders.append("F")
+
     if category[0]:
         age_categories.append(category[0])
     if category[1]:
@@ -91,9 +112,10 @@ def process_top(inputFile, who: list[bool], category: list[int]):
 
     for gender in genders:
         for age_category in age_categories:
-            result += f"{best_players[gender][int(age_category)]['name']} is the best {gender} player in {category_to_str(age_category)} category with {best_players[gender][int(age_category)]['medals']}\n"
+            player = best_players[gender][age_category]
+            result += f"{player.get_name()} is the best {gender} player in {player.age_category_to_string()} category with {player.get_medals()}\n"
 
     return result
 
 if __name__ == '__main__':
-    print(process_top('data/Olympics.tsv', [True, True], [1, 2]))
+    print(process_top('data/athlete_events.csv', [True, True], [2, 3]))
